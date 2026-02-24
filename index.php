@@ -73,9 +73,15 @@ $products = $pdo->query($sql)->fetchAll();
   <div class="container d-flex justify-content-between align-items-center">
     <a class="navbar-brand fw-bold" href="./">Public Products</a>
 
-    <a href="login" class="btn btn-outline-light btn-sm">
-      Admin Login
-    </a>
+    <div class="d-flex gap-2">
+      <a href="gtin-bulk-verify.php" class="btn btn-outline-light btn-sm">
+        Bulk GTIN Verification
+      </a>
+
+      <a href="login" class="btn btn-outline-light btn-sm">
+        Admin Login
+      </a>
+    </div>
   </div>
 </nav>
 
