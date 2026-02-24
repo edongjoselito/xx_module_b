@@ -84,7 +84,7 @@ $products = $pdo->query($sql)->fetchAll();
   <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
     <div>
       <h3 class="mb-0 fw-bold">All Products</h3>
-      <div class="text-muted">Browse products (mobile-friendly)</div>
+      <div class="text-muted">Browse products</div>
     </div>
   </div>
 
