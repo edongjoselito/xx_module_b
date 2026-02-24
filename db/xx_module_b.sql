@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 24, 2026 at 01:18 PM
+-- Generation Time: Feb 24, 2026 at 01:28 PM
 -- Server version: 8.0.44
 -- PHP Version: 8.2.12
 
@@ -82,7 +82,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `company_id`, `gtin`, `name_en`, `name_fr`, `description_en`, `description_fr`, `brand`, `country_of_origin`, `gross_weight`, `net_weight`, `weight_unit`, `image_path`, `is_hidden`, `created_at`, `updated_at`) VALUES
-(5, 4, '1234567891234', 'Audio Amplifier', 'Audio Amplifier', '2000W 2 Channel Amplifier With Mixer Equalizer USB Bluetooth Fm Radio AV-MP326BT Home Stereo Audio', '2000W 2 Channel Amplifier With Mixer Equalizer USB Bluetooth Fm Radio AV-MP326BT Home Stereo Audio', 'Sony', 'Philippines', 5.500, 5.500, 'kg', 'uploads/products/prod_20260224_114849_8c60cbce.png', 0, '2026-02-24 11:48:49', '2026-02-24 11:48:49'),
+(5, 4, '1234567891234', 'Audio Amplifier', 'Audio Amplifier', '2000W 2 Channel Amplifier With Mixer Equalizer USB Bluetooth Fm Radio AV-MP326BT Home Stereo Audio', '2000W 2 Channel Amplifier With Mixer Equalizer USB Bluetooth Fm Radio AV-MP326BT Home Stereo Audio', 'Sony', 'Philippines', 5.500, 5.500, 'kg', 'uploads/products/prod_20260224_114849_8c60cbce.png', 0, '2026-02-24 11:48:49', '2026-02-24 13:28:00'),
 (6, 5, '0987654321211', 'C2 Solo Lemon', 'C2 Solo Lemon', 'C2 Solo Lemon', 'C2 Solo Lemon', '', '', 0.500, 0.500, 'g', 'uploads/products/prod_20260224_130714_e8aaa14a.webp', 0, '2026-02-24 13:07:14', '2026-02-24 13:07:14');
 
 --
