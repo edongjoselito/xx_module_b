@@ -1,0 +1,14 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# /login -> login.php
+RewriteRule ^login/?$ login.php [L]
+
+# /products -> index.php
+RewriteRule ^products/?$ index.php [L]
+
+# /01/{GTIN} -> /01/index.php?gtin={GTIN}
+RewriteRule ^01/([^/]+)/?$ 01/index.php?gtin=$1 [L,QSA]

@@ -4,22 +4,21 @@ require_once __DIR__ . '/../db.php';
 
 function h($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
-// Get GTIN from the URL: /xx_module_b/01/{GTIN}
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+// ✅ Get GTIN from URL path: /01/{GTIN}
+$uri   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $parts = explode('/', trim($uri, '/'));
+$gtin  = trim((string)end($parts));
 
-// last part is the gtin
-$gtin = end($parts);
-$gtin = trim((string)$gtin);
-
-$gtin = trim($_GET['gtin'] ?? '');
-
-$gtin = trim($_GET['gtin'] ?? '');
+// ✅ If you still support ?gtin=..., keep this fallback
+if (!empty($_GET['gtin'])) {
+    $gtin = trim((string)$_GET['gtin']);
+}
 
 if ($gtin === '') {
     header("Location: ../index.php");
     exit;
 }
+
 // Fetch product (visible only)
 $stmt = $pdo->prepare("
     SELECT
@@ -38,6 +37,7 @@ $product = $stmt->fetch();
 if (!$product) {
     http_response_code(404);
     $notFound = true;
+    $img = '';
 } else {
     $notFound = false;
     $img = trim((string)($product['image_path'] ?? ''));
@@ -53,12 +53,31 @@ if (!$product) {
 
   <style>
     body { background: #f6f7fb; }
-    .hero-img {
+
+    /* ✅ Autofit container (no crop, any image size) */
+    .hero-wrap{
       width: 100%;
-      max-height: 380px;
-      object-fit: cover;
-      border-radius: 14px;
+      height: 380px;                 /* fixed hero height */
       background: #fff;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-wrap img{
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;           /* ✅ show whole image */
+      object-position: center;
+      display: block;
+    }
+
+    @media (max-width: 576px){
+      .hero-wrap{ height: 260px; }
     }
   </style>
 </head>
@@ -81,14 +100,22 @@ if (!$product) {
 
     <div class="row g-3">
       <div class="col-12 col-lg-6">
-        <?php if ($img !== ''): ?>
-          <img src="../<?= h($img) ?>" class="hero-img" alt="Product Image">
-        <?php else: ?>
-          <div class="p-5 bg-white border rounded-4 text-center text-muted">
-            <div class="fw-bold">No Image</div>
-            <div class="small">Add image_path in admin</div>
-          </div>
-        <?php endif; ?>
+
+        <?php
+          // ✅ Placeholder if missing/broken
+          $placeholder = '../assets/images/no-image.avif';
+          $imgSrc = $placeholder;
+
+          if ($img !== '' && file_exists(__DIR__ . '/../' . $img)) {
+              $imgSrc = '../' . $img;
+          }
+        ?>
+
+        <!-- ✅ Auto-fit image regardless of size -->
+        <div class="hero-wrap">
+          <img src="<?= h($imgSrc) ?>" alt="Product Image">
+        </div>
+
       </div>
 
       <div class="col-12 col-lg-6">

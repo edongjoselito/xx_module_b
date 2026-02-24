@@ -34,11 +34,28 @@ $products = $pdo->query($sql)->fetchAll();
 
   <style>
     body { background: #f6f7fb; }
-    .card-img-top {
-      height: 200px;
-      object-fit: cover;
+
+    /* ✅ Image autofit regardless of size (no crop) */
+    .img-wrap{
+      height: 220px;
+      width: 100%;
       background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(0,0,0,.06);
     }
+    .img-wrap img{
+      max-height: 100%;
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;     /* ✅ shows whole image */
+      object-position: center;
+      display: block;
+    }
+
     .badge-soft {
       background: rgba(13,110,253,.08);
       color: #0d6efd;
@@ -77,31 +94,25 @@ $products = $pdo->query($sql)->fetchAll();
     <div class="row g-3">
       <?php foreach ($products as $p): ?>
         <?php
-  $gtin = trim((string)$p['gtin']);
-  $img  = trim((string)($p['image_path'] ?? ''));
+          $gtin = trim((string)$p['gtin']);
+          $img  = trim((string)($p['image_path'] ?? ''));
 
-  // Default placeholder
-  $placeholder = 'assets/images/no-image.avif';
+          // Default placeholder
+          $placeholder = 'assets/images/no-image.avif';
 
-  // If image path exists and file exists, use it. Otherwise use placeholder.
-  $imgSrc = $placeholder;
-  if ($img !== '' && file_exists(__DIR__ . '/' . $img)) {
-      $imgSrc = $img;
-  }
-?>
+          // If image path exists and file exists, use it. Otherwise use placeholder.
+          $imgSrc = $placeholder;
+          if ($img !== '' && file_exists(__DIR__ . '/' . $img)) {
+              $imgSrc = $img;
+          }
+        ?>
         <div class="col-12 col-sm-6 col-lg-4">
           <div class="card shadow-sm border-0 h-100">
 
-            <?php if ($imgSrc !== ''): ?>
-              <img src="<?= h($imgSrc) ?>" class="card-img-top" alt="Product Image">
-            <?php else: ?>
-              <div class="card-img-top d-flex align-items-center justify-content-center text-muted">
-                <div class="text-center">
-                  <div class="fw-bold">No Image</div>
-                  <div class="small">Add image_path</div>
-                </div>
-              </div>
-            <?php endif; ?>
+            <!-- ✅ Autofit Image (no crop) -->
+            <div class="img-wrap">
+              <img src="<?= h($imgSrc) ?>" alt="Product Image">
+            </div>
 
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-start gap-2">

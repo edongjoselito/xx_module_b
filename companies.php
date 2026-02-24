@@ -1,109 +1,152 @@
 <?php
 session_start();
-if (empty($_SESSION['admin_logged_in'])) { header('Location: login.php'); exit; }
+if (empty($_SESSION['admin_logged_in'])) {
+  header('Location: login.php');
+  exit;
+}
 
 require_once 'db.php';
 function h($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
-$action = $_GET['action'] ?? ''; // create | edit | delete
-$id     = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$action  = $_GET['action'] ?? ''; // create | edit | delete
+$id      = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $message = "";
 
 // ADD
 if (isset($_POST['add_company'])) {
-    $company_name      = trim($_POST['company_name'] ?? '');
-    $company_address   = trim($_POST['company_address'] ?? '');
-    $company_telephone = trim($_POST['company_telephone'] ?? '');
-    $company_email     = trim($_POST['company_email'] ?? '');
+  $company_name      = trim($_POST['company_name'] ?? '');
+  $company_address   = trim($_POST['company_address'] ?? '');
+  $company_telephone = trim($_POST['company_telephone'] ?? '');
+  $company_email     = trim($_POST['company_email'] ?? '');
 
-    $owner_name        = trim($_POST['owner_name'] ?? '');
-    $owner_mobile      = trim($_POST['owner_mobile'] ?? '');
-    $owner_email       = trim($_POST['owner_email'] ?? '');
+  $owner_name        = trim($_POST['owner_name'] ?? '');
+  $owner_mobile      = trim($_POST['owner_mobile'] ?? '');
+  $owner_email       = trim($_POST['owner_email'] ?? '');
 
-    $contact_name      = trim($_POST['contact_name'] ?? '');
-    $contact_mobile    = trim($_POST['contact_mobile'] ?? '');
-    $contact_email     = trim($_POST['contact_email'] ?? '');
+  $contact_name      = trim($_POST['contact_name'] ?? '');
+  $contact_mobile    = trim($_POST['contact_mobile'] ?? '');
+  $contact_email     = trim($_POST['contact_email'] ?? '');
 
-    $is_deactivated    = isset($_POST['is_deactivated']) ? 1 : 0;
+  $is_deactivated    = isset($_POST['is_deactivated']) ? 1 : 0;
 
-    if ($company_name === '' || $company_address === '' || $company_telephone === '') {
-        $message = "Please fill required fields (Name, Address, Telephone).";
-        $action = 'create';
-    } else {
-        $now = date('Y-m-d H:i:s');
-        $stmt = $pdo->prepare("
-            INSERT INTO companies
-            (company_name, company_address, company_telephone, company_email,
-             owner_name, owner_mobile, owner_email,
-             contact_name, contact_mobile, contact_email,
-             is_deactivated, created_at, updated_at)
-            VALUES
-            (?, ?, ?, ?,
-             ?, ?, ?,
-             ?, ?, ?,
-             ?, ?, ?)
-        ");
-        $stmt->execute([
-            $company_name, $company_address, $company_telephone, $company_email,
-            $owner_name, $owner_mobile, $owner_email,
-            $contact_name, $contact_mobile, $contact_email,
-            $is_deactivated, $now, $now
-        ]);
-        header("Location: companies.php");
-        exit;
-    }
+  if ($company_name === '' || $company_address === '' || $company_telephone === '') {
+    $message = "Please fill required fields (Name, Address, Telephone).";
+    $action = 'create';
+  } else {
+    $now = date('Y-m-d H:i:s');
+    $stmt = $pdo->prepare("
+      INSERT INTO companies
+      (company_name, company_address, company_telephone, company_email,
+       owner_name, owner_mobile, owner_email,
+       contact_name, contact_mobile, contact_email,
+       is_deactivated, created_at, updated_at)
+      VALUES
+      (?, ?, ?, ?,
+       ?, ?, ?,
+       ?, ?, ?,
+       ?, ?, ?)
+    ");
+    $stmt->execute([
+      $company_name, $company_address, $company_telephone, $company_email,
+      $owner_name, $owner_mobile, $owner_email,
+      $contact_name, $contact_mobile, $contact_email,
+      $is_deactivated, $now, $now
+    ]);
+    header("Location: companies.php");
+    exit;
+  }
 }
 
 // UPDATE
+// UPDATE
 if (isset($_POST['update_company'])) {
-    $editId = (int)($_POST['id'] ?? 0);
+  $editId = (int)($_POST['id'] ?? 0);
 
-    $company_name      = trim($_POST['company_name'] ?? '');
-    $company_address   = trim($_POST['company_address'] ?? '');
-    $company_telephone = trim($_POST['company_telephone'] ?? '');
-    $company_email     = trim($_POST['company_email'] ?? '');
+  $company_name      = trim($_POST['company_name'] ?? '');
+  $company_address   = trim($_POST['company_address'] ?? '');
+  $company_telephone = trim($_POST['company_telephone'] ?? '');
+  $company_email     = trim($_POST['company_email'] ?? '');
 
-    $owner_name        = trim($_POST['owner_name'] ?? '');
-    $owner_mobile      = trim($_POST['owner_mobile'] ?? '');
-    $owner_email       = trim($_POST['owner_email'] ?? '');
+  $owner_name        = trim($_POST['owner_name'] ?? '');
+  $owner_mobile      = trim($_POST['owner_mobile'] ?? '');
+  $owner_email       = trim($_POST['owner_email'] ?? '');
 
-    $contact_name      = trim($_POST['contact_name'] ?? '');
-    $contact_mobile    = trim($_POST['contact_mobile'] ?? '');
-    $contact_email     = trim($_POST['contact_email'] ?? '');
+  $contact_name      = trim($_POST['contact_name'] ?? '');
+  $contact_mobile    = trim($_POST['contact_mobile'] ?? '');
+  $contact_email     = trim($_POST['contact_email'] ?? '');
 
-    $is_deactivated    = isset($_POST['is_deactivated']) ? 1 : 0;
+  $is_deactivated    = isset($_POST['is_deactivated']) ? 1 : 0;
 
-    if ($company_name === '' || $company_address === '' || $company_telephone === '') {
-        $message = "Please fill required fields (Name, Address, Telephone).";
-        $action = 'edit';
-        $id = $editId;
-    } else {
-        $now = date('Y-m-d H:i:s');
-        $stmt = $pdo->prepare("
-            UPDATE companies SET
-                company_name=?, company_address=?, company_telephone=?, company_email=?,
-                owner_name=?, owner_mobile=?, owner_email=?,
-                contact_name=?, contact_mobile=?, contact_email=?,
-                is_deactivated=?, updated_at=?
-            WHERE id=?
+  if ($company_name === '' || $company_address === '' || $company_telephone === '') {
+    $message = "Please fill required fields (Name, Address, Telephone).";
+    $action = 'edit';
+    $id = $editId;
+  } else {
+
+    // 1) Get previous status first (before updating)
+    $stOld = $pdo->prepare("SELECT is_deactivated FROM companies WHERE id=?");
+    $stOld->execute([$editId]);
+    $oldRow = $stOld->fetch();
+    $oldStatus = $oldRow ? (int)$oldRow['is_deactivated'] : 0;
+
+    $now = date('Y-m-d H:i:s');
+
+    try {
+      // 2) Start transaction so both updates succeed together
+      $pdo->beginTransaction();
+
+      // 3) Update company info
+      $stmt = $pdo->prepare("
+        UPDATE companies SET
+          company_name=?, company_address=?, company_telephone=?, company_email=?,
+          owner_name=?, owner_mobile=?, owner_email=?,
+          contact_name=?, contact_mobile=?, contact_email=?,
+          is_deactivated=?, updated_at=?
+        WHERE id=?
+      ");
+      $stmt->execute([
+        $company_name, $company_address, $company_telephone, $company_email,
+        $owner_name, $owner_mobile, $owner_email,
+        $contact_name, $contact_mobile, $contact_email,
+        $is_deactivated, $now, $editId
+      ]);
+
+      // 4) If status changed, update products.is_hidden
+      // Deactivated -> hide products (is_hidden=1)
+      // Activated   -> show products (is_hidden=0)
+      if ($oldStatus !== (int)$is_deactivated) {
+        $newHidden = ((int)$is_deactivated === 1) ? 1 : 0;
+
+        $stProd = $pdo->prepare("
+          UPDATE products
+          SET is_hidden = ?, updated_at = ?
+          WHERE company_id = ?
         ");
-        $stmt->execute([
-            $company_name, $company_address, $company_telephone, $company_email,
-            $owner_name, $owner_mobile, $owner_email,
-            $contact_name, $contact_mobile, $contact_email,
-            $is_deactivated, $now, $editId
-        ]);
-        header("Location: companies.php");
-        exit;
+        $stProd->execute([$newHidden, $now, $editId]);
+      }
+
+      // ✅ 5) Commit transaction
+      $pdo->commit();
+
+      header("Location: companies.php");
+      exit;
+
+    } catch (Exception $e) {
+      // rollback if something fails
+      if ($pdo->inTransaction()) $pdo->rollBack();
+      $message = "Update failed: " . $e->getMessage();
+      $action = 'edit';
+      $id = $editId;
     }
+  }
 }
 
 // DELETE
 if ($action === 'delete' && $id > 0) {
-    $stmt = $pdo->prepare("DELETE FROM companies WHERE id=?");
-    $stmt->execute([$id]);
-    header("Location: companies.php");
-    exit;
+  $stmt = $pdo->prepare("DELETE FROM companies WHERE id=?");
+  $stmt->execute([$id]);
+  header("Location: companies.php");
+  exit;
 }
 
 // LIST
@@ -112,16 +155,16 @@ $companies = $pdo->query("SELECT * FROM companies ORDER BY id DESC")->fetchAll()
 // EDIT ROW
 $editRow = null;
 if ($action === 'edit' && $id > 0) {
-    $st = $pdo->prepare("SELECT * FROM companies WHERE id=?");
-    $st->execute([$id]);
-    $editRow = $st->fetch();
-    if (!$editRow) { header("Location: companies.php"); exit; }
+  $st = $pdo->prepare("SELECT * FROM companies WHERE id=?");
+  $st->execute([$id]);
+  $editRow = $st->fetch();
+  if (!$editRow) { header("Location: companies.php"); exit; }
 }
 
 // Keep values on validation fail
 $v = function($key) use ($editRow){
-    if (isset($_POST[$key])) return trim((string)$_POST[$key]);
-    return $editRow[$key] ?? '';
+  if (isset($_POST[$key])) return trim((string)$_POST[$key]);
+  return $editRow[$key] ?? '';
 };
 ?>
 <!DOCTYPE html>
@@ -152,8 +195,14 @@ $v = function($key) use ($editRow){
     <div class="alert alert-warning"><?= h($message) ?></div>
   <?php endif; ?>
 
-  <div class="d-flex justify-content-end mb-3">
-    <a href="companies.php?action=create" class="btn btn-success btn-sm">+ Add New Company</a>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="companies-deactivated.php" class="btn btn-outline-secondary btn-sm">
+      View Deactivated Companies
+    </a>
+
+    <a href="companies.php?action=create" class="btn btn-success btn-sm">
+      + Add New Company
+    </a>
   </div>
 
   <?php if ($action === 'create' || $action === 'edit'): ?>
@@ -273,9 +322,11 @@ $v = function($key) use ($editRow){
                   <td class="text-end">
                     <a class="btn btn-sm btn-outline-primary"
                        href="companies.php?action=edit&id=<?= (int)$c['id'] ?>">Edit</a>
-                    <a class="btn btn-sm btn-danger"
-                       href="companies.php?action=delete&id=<?= (int)$c['id'] ?>"
-                       onclick="return confirm('Delete this company?');">Delete</a>
+
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="company-products.php?company_id=<?= (int)$c['id'] ?>">
+                      View Products
+                    </a>
                   </td>
                 </tr>
               <?php endforeach; ?>
