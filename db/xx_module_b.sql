@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2026 at 11:34 AM
--- Server version: 8.4.7
--- PHP Version: 8.2.4
+-- Generation Time: Feb 24, 2026 at 01:18 PM
+-- Server version: 8.0.44
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,16 +29,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `companies` (
   `id` int NOT NULL,
-  `company_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `company_address` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `company_telephone` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `company_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner_mobile` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contact_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contact_mobile` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contact_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_address` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_telephone` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner_mobile` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact_mobile` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_deactivated` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
@@ -49,8 +49,8 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `company_name`, `company_address`, `company_telephone`, `company_email`, `owner_name`, `owner_mobile`, `owner_email`, `contact_name`, `contact_mobile`, `contact_email`, `is_deactivated`, `created_at`, `updated_at`) VALUES
-(1, 'Euro Expo', 'Boulevard de l\'Europe, 69680 Chassieu, France', '+33 1 41 56 78 00', 'mail.customerservice.hdq@example.com', 'Benjamin Smith', '+33 6 12 34 56 78', 'b.smith@example.com', 'Marie Dubois', '+33 6 98 76 54 32', 'm.dubois@example.com', 0, '2026-02-21 07:01:01', '2026-02-21 07:01:01'),
-(2, 'asdffjkdfj', 'kdfjadksfj', '09889dafs', 'ksdfadkfdsjkfds@gmail.com', 'owerkdnf', 'ddk', 'adf@domain.com', 'dfad', 'dfadf', 'dfdf@domain.com', 0, '2026-02-21 04:58:40', '2026-02-21 05:09:54');
+(4, 'SOFTTECH SOLUTIONS AND SERVICES CO.', 'Lower Salazar, Central, City of Mati, Davao Oriental', '087 201 0693', 'admin@softtechservices.net', 'Joselito Q. Edong', '09122350149', 'joselito.edong@softtechservices.net', 'Ivy G. Edong', '09173180923', 'ivy.edong@softtechservices.net', 0, '2026-02-24 11:45:20', '2026-02-24 11:45:20'),
+(5, 'DAVAO ORIENTAL INTERNATIONAL TECHNOLOGY COLLEGE, INC.', 'Madang, Central, City of Mati, Davao Oriental', '0', 'noemail@localhost.com', '', '', '', '', '', '', 0, '2026-02-24 11:46:23', '2026-02-24 11:46:23');
 
 -- --------------------------------------------------------
 
@@ -61,17 +61,17 @@ INSERT INTO `companies` (`id`, `company_name`, `company_address`, `company_telep
 CREATE TABLE `products` (
   `id` int NOT NULL,
   `company_id` int NOT NULL,
-  `gtin` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name_en` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name_fr` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description_en` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description_fr` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `brand` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country_of_origin` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gtin` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name_en` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name_fr` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description_en` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description_fr` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `brand` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country_of_origin` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `gross_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
   `net_weight` decimal(10,3) NOT NULL DEFAULT '0.000',
-  `weight_unit` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'g',
-  `image_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `weight_unit` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'g',
+  `image_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
@@ -82,10 +82,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `company_id`, `gtin`, `name_en`, `name_fr`, `description_en`, `description_fr`, `brand`, `country_of_origin`, `gross_weight`, `net_weight`, `weight_unit`, `image_path`, `is_hidden`, `created_at`, `updated_at`) VALUES
-(1, 1, '03000123456789', 'Organic Apple Juice', 'Jus de pomme biologique', 'Our organic apple juice is pressed from 100% fresh organic apples, with no added sugars or preservatives. Rich in vitamin C and antioxidants, it\'s an ideal choice for your daily healthy diet.', 'Notre jus de pomme biologique est pressé à partir de 100% de pommes biologiques fraîches, sans sucre ajouté ni conservateurs. Riche en vitamine C et en antioxydants, c\'est le choix idéal pour votre alimentation quotidienne saine.', 'Green Orchard', 'France', 1.100, 1.000, 'L', NULL, 0, '2026-02-21 07:01:01', '2026-02-21 07:01:01'),
-(2, 1, '23232', 'dsfasdfds', 'dsaffdfdsfds', 'sdfasdfasdf', 'sdfsadf', 'dfasdf', 'sdfdsfds', 0.000, 0.000, 'g', NULL, 0, '2026-02-21 05:46:32', '2026-02-21 05:46:32'),
-(3, 1, '3434343', 'dsfsdfsdf', 'dfasdf', 'sfsdf', 'dsfds', 'sdfdsa', 'sdfdsf', 0.000, 0.000, 'g', NULL, 0, '2026-02-21 06:53:27', '2026-02-21 06:53:27'),
-(4, 1, '1234567890121', 'sfadsf', 'sdfdas', 'sdfdsaf', 'dsfadsf', 'dsfads', 'dsfasdfd', 0.000, 0.000, 'g', NULL, 0, '2026-02-21 07:07:46', '2026-02-21 07:07:46');
+(5, 4, '1234567891234', 'Audio Amplifier', 'Audio Amplifier', '2000W 2 Channel Amplifier With Mixer Equalizer USB Bluetooth Fm Radio AV-MP326BT Home Stereo Audio', '2000W 2 Channel Amplifier With Mixer Equalizer USB Bluetooth Fm Radio AV-MP326BT Home Stereo Audio', 'Sony', 'Philippines', 5.500, 5.500, 'kg', 'uploads/products/prod_20260224_114849_8c60cbce.png', 0, '2026-02-24 11:48:49', '2026-02-24 11:48:49'),
+(6, 5, '0987654321211', 'C2 Solo Lemon', 'C2 Solo Lemon', 'C2 Solo Lemon', 'C2 Solo Lemon', '', '', 0.500, 0.500, 'g', 'uploads/products/prod_20260224_130714_e8aaa14a.webp', 0, '2026-02-24 13:07:14', '2026-02-24 13:07:14');
 
 --
 -- Indexes for dumped tables
@@ -114,13 +112,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
