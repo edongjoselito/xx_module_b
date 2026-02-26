@@ -1,15 +1,15 @@
 <?php
-// 01/index.php (PUBLIC) - Product Details
+
 require_once __DIR__ . '/../db.php';
 
 function h($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
-// ✅ Get GTIN from URL path: /01/{GTIN}
+
 $uri   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $parts = explode('/', trim($uri, '/'));
 $gtin  = trim((string)end($parts));
 
-// ✅ If you still support ?gtin=..., keep this fallback
+
 if (!empty($_GET['gtin'])) {
     $gtin = trim((string)$_GET['gtin']);
 }
@@ -19,7 +19,7 @@ if ($gtin === '') {
     exit;
 }
 
-// Fetch product (visible only)
+
 $stmt = $pdo->prepare("
     SELECT
         p.*,
@@ -54,10 +54,9 @@ if (!$product) {
   <style>
     body { background: #f6f7fb; }
 
-    /* ✅ Autofit container (no crop, any image size) */
     .hero-wrap{
       width: 100%;
-      height: 380px;                 /* fixed hero height */
+      height: 380px;               
       background: #fff;
       border-radius: 14px;
       border: 1px solid rgba(0,0,0,.06);
@@ -71,7 +70,7 @@ if (!$product) {
       max-height: 100%;
       width: auto;
       height: auto;
-      object-fit: contain;           /* ✅ show whole image */
+      object-fit: contain;         
       object-position: center;
       display: block;
     }
@@ -102,7 +101,7 @@ if (!$product) {
       <div class="col-12 col-lg-6">
 
         <?php
-          // ✅ Placeholder if missing/broken
+       
           $placeholder = '../assets/images/no-image.avif';
           $imgSrc = $placeholder;
 
@@ -111,7 +110,7 @@ if (!$product) {
           }
         ?>
 
-        <!-- ✅ Auto-fit image regardless of size -->
+      
         <div class="hero-wrap">
           <img src="<?= h($imgSrc) ?>" alt="Product Image">
         </div>

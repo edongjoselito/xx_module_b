@@ -1,5 +1,4 @@
 <?php
-// admin_dashboard.php
 session_start();
 
 if (empty($_SESSION['admin_logged_in'])) {
@@ -36,7 +35,6 @@ if (empty($_SESSION['admin_logged_in'])) {
             </div>
 
             <div class="row g-3">
-                <!-- Companies -->
                 <div class="col-12 col-md-6">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-body p-4">
@@ -51,7 +49,6 @@ if (empty($_SESSION['admin_logged_in'])) {
                     </div>
                 </div>
 
-                <!-- Products -->
                 <div class="col-12 col-md-6">
                     <div class="card shadow-sm border-0 h-100">
                         <div class="card-body p-4">

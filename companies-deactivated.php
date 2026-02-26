@@ -1,5 +1,5 @@
 <?php
-// companies-deactivated.php (ADMIN) - List of Deactivated Companies
+
 session_start();
 if (empty($_SESSION['admin_logged_in'])) {
     header('Location: login.php');
@@ -9,7 +9,7 @@ if (empty($_SESSION['admin_logged_in'])) {
 require_once 'db.php';
 function h($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
-// ✅ Fetch only deactivated companies
+
 $companies = $pdo->query("
     SELECT *
     FROM companies

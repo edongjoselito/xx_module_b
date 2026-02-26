@@ -1,10 +1,8 @@
 <?php
-// index.php (PUBLIC) - Product Listing
 require_once 'db.php';
 
 function h($v) { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
-// Fetch only visible products + active companies (optional filter)
 $sql = "
     SELECT
         p.gtin,
@@ -35,7 +33,6 @@ $products = $pdo->query($sql)->fetchAll();
   <style>
     body { background: #f6f7fb; }
 
-    /* ✅ Image autofit regardless of size (no crop) */
     .img-wrap{
       height: 220px;
       width: 100%;
@@ -51,7 +48,7 @@ $products = $pdo->query($sql)->fetchAll();
       max-width: 100%;
       width: auto;
       height: auto;
-      object-fit: contain;     /* ✅ shows whole image */
+      object-fit: contain;    
       object-position: center;
       display: block;
     }
@@ -103,10 +100,10 @@ $products = $pdo->query($sql)->fetchAll();
           $gtin = trim((string)$p['gtin']);
           $img  = trim((string)($p['image_path'] ?? ''));
 
-          // Default placeholder
+     
           $placeholder = 'assets/images/no-image.avif';
 
-          // If image path exists and file exists, use it. Otherwise use placeholder.
+    
           $imgSrc = $placeholder;
           if ($img !== '' && file_exists(__DIR__ . '/' . $img)) {
               $imgSrc = $img;
@@ -115,7 +112,7 @@ $products = $pdo->query($sql)->fetchAll();
         <div class="col-12 col-sm-6 col-lg-4">
           <div class="card shadow-sm border-0 h-100">
 
-            <!-- ✅ Autofit Image (no crop) -->
+         
             <div class="img-wrap">
               <img src="<?= h($imgSrc) ?>" alt="Product Image">
             </div>

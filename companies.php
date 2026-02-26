@@ -8,11 +8,11 @@ if (empty($_SESSION['admin_logged_in'])) {
 require_once 'db.php';
 function h($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 
-$action  = $_GET['action'] ?? ''; // create | edit | delete
+$action  = $_GET['action'] ?? ''; 
 $id      = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $message = "";
 
-// ADD
+
 if (isset($_POST['add_company'])) {
   $company_name      = trim($_POST['company_name'] ?? '');
   $company_address   = trim($_POST['company_address'] ?? '');
@@ -57,8 +57,7 @@ if (isset($_POST['add_company'])) {
   }
 }
 
-// UPDATE
-// UPDATE
+
 if (isset($_POST['update_company'])) {
   $editId = (int)($_POST['id'] ?? 0);
 
@@ -83,7 +82,7 @@ if (isset($_POST['update_company'])) {
     $id = $editId;
   } else {
 
-    // 1) Get previous status first (before updating)
+
     $stOld = $pdo->prepare("SELECT is_deactivated FROM companies WHERE id=?");
     $stOld->execute([$editId]);
     $oldRow = $stOld->fetch();
@@ -92,10 +91,10 @@ if (isset($_POST['update_company'])) {
     $now = date('Y-m-d H:i:s');
 
     try {
-      // 2) Start transaction so both updates succeed together
+
       $pdo->beginTransaction();
 
-      // 3) Update company info
+
       $stmt = $pdo->prepare("
         UPDATE companies SET
           company_name=?, company_address=?, company_telephone=?, company_email=?,
@@ -111,9 +110,7 @@ if (isset($_POST['update_company'])) {
         $is_deactivated, $now, $editId
       ]);
 
-      // 4) If status changed, update products.is_hidden
-      // Deactivated -> hide products (is_hidden=1)
-      // Activated   -> show products (is_hidden=0)
+
       if ($oldStatus !== (int)$is_deactivated) {
         $newHidden = ((int)$is_deactivated === 1) ? 1 : 0;
 
@@ -125,14 +122,14 @@ if (isset($_POST['update_company'])) {
         $stProd->execute([$newHidden, $now, $editId]);
       }
 
-      // ✅ 5) Commit transaction
+
       $pdo->commit();
 
       header("Location: companies.php");
       exit;
 
     } catch (Exception $e) {
-      // rollback if something fails
+
       if ($pdo->inTransaction()) $pdo->rollBack();
       $message = "Update failed: " . $e->getMessage();
       $action = 'edit';
@@ -141,7 +138,7 @@ if (isset($_POST['update_company'])) {
   }
 }
 
-// DELETE
+
 if ($action === 'delete' && $id > 0) {
   $stmt = $pdo->prepare("DELETE FROM companies WHERE id=?");
   $stmt->execute([$id]);
@@ -149,10 +146,10 @@ if ($action === 'delete' && $id > 0) {
   exit;
 }
 
-// LIST
+
 $companies = $pdo->query("SELECT * FROM companies ORDER BY id DESC")->fetchAll();
 
-// EDIT ROW
+
 $editRow = null;
 if ($action === 'edit' && $id > 0) {
   $st = $pdo->prepare("SELECT * FROM companies WHERE id=?");
@@ -161,7 +158,7 @@ if ($action === 'edit' && $id > 0) {
   if (!$editRow) { header("Location: companies.php"); exit; }
 }
 
-// Keep values on validation fail
+
 $v = function($key) use ($editRow){
   if (isset($_POST[$key])) return trim((string)$_POST[$key]);
   return $editRow[$key] ?? '';
