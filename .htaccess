@@ -10,5 +10,11 @@ RewriteRule ^login/?$ login.php [L]
 # /products -> index.php
 RewriteRule ^products/?$ index.php [L]
 
+# /api/products -> api/products.php
+RewriteRule ^api/products/?$ api/products.php [L,QSA]
+
+# /api/products/{GTIN} -> api/products.php?gtin={GTIN}
+RewriteRule ^api/products/([^/]+)/?$ api/products.php?gtin=$1 [L,QSA]
+
 # /01/{GTIN} -> /01/index.php?gtin={GTIN}
 RewriteRule ^01/([^/]+)/?$ 01/index.php?gtin=$1 [L,QSA]
